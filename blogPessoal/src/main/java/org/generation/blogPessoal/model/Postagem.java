@@ -1,43 +1,44 @@
 package org.generation.blogPessoal.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 
-	@Entity
-	@Table(name = "postagem")
-	public class Postagem {
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@NotNull
-	@Size(min = 5, max = 100)
-	private String titulo;
-	
-	@NotNull
-	@Size(min = 10, max = 500)
-	private String texto;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date data = new java.sql.Date(System.currentTimeMillis());
+@Entity
+public class Postagem {
 
-	
-	public Long getId() {
-		return id;
+	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long idPostagem;
+	private @NotBlank String titulo;
+	private @NotBlank String descricao;
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataPostagem = LocalDate.now();
+
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	@JsonIgnoreProperties({"minhasPostagens"})
+	private Usuario criador;
+
+	@ManyToOne
+	@JoinColumn(name = "tema_id")
+	@JsonIgnoreProperties({"postagens"})
+	private Tema temaRelacionado;
+
+	public Long getIdPostagem() {
+		return idPostagem;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdPostagem(Long idPostagem) {
+		this.idPostagem = idPostagem;
 	}
 
 	public String getTitulo() {
@@ -48,20 +49,36 @@ import javax.validation.constraints.Size;
 		this.titulo = titulo;
 	}
 
-	public String getTexto() {
-		return texto;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setTexto(String texto) {
-		this.texto = texto;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public Date getData() {
-		return data;
+	public LocalDate getDataPostagem() {
+		return dataPostagem;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
+	public void setDataPostagem(LocalDate dataPostagem) {
+		this.dataPostagem = dataPostagem;
+	}
+
+	public Usuario getCriador() {
+		return criador;
+	}
+
+	public void setCriador(Usuario criador) {
+		this.criador = criador;
+	}
+
+	public Tema getTemaRelacionado() {
+		return temaRelacionado;
+	}
+
+	public void setTemaRelacionado(Tema temaRelacionado) {
+		this.temaRelacionado = temaRelacionado;
 	}
 
 }
