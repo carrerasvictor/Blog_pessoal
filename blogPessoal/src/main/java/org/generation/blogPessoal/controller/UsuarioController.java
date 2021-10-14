@@ -8,6 +8,7 @@ import org.generation.blogPessoal.model.Usuario;
 import org.generation.blogPessoal.model.dtos.CredenciaisDTO;
 import org.generation.blogPessoal.model.dtos.UsuarioLoginDTO;
 import org.generation.blogPessoal.repository.UsuarioRepository;
+import org.generation.blogPessoal.servicos.UsuarioServicos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class UsuarioController {
 
 	private @Autowired UsuarioRepository repositorio;
-	private @Autowired org.generation.blogPessoal.servicos.UsuarioServicos servicos;
+	private @Autowired UsuarioServicos servicos;
 
 	@GetMapping("/todes")
 	public ResponseEntity<List<Usuario>> pegarTodes() {
@@ -62,7 +63,7 @@ public class UsuarioController {
 		} else {
 			return ResponseEntity.status(200).body(objetoLista);
 		}
-	}
+	} 
 
 	@GetMapping("/{id_usuario}")
 	public ResponseEntity<Usuario> buscarPorId(@PathVariable(value = "id_usuario") Long idUsuario) {
@@ -75,7 +76,7 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/salvar")
-	public ResponseEntity<Usuario> salvar(@Valid @RequestBody Usuario novoUsuario) {
+	public ResponseEntity<Object> salvar(@Valid @RequestBody Usuario novoUsuario) {
 		return servicos.cadastrarUsuario(novoUsuario).map(resp -> ResponseEntity.status(201).body(resp))
 				.orElseThrow(() -> {
 					throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

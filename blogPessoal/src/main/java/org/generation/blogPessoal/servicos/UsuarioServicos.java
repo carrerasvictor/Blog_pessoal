@@ -29,7 +29,7 @@ public class UsuarioServicos {
 
 	}
 
-	public Optional<Object> cadastrarUsuario1(Usuario usuarioParaCadastrar) {
+	public Optional<Object> cadastrarUsuario(Usuario usuarioParaCadastrar) {
 		return repositorio.findByEmail(usuarioParaCadastrar.getEmail()).map(usuarioExistente -> {
 			return Optional.empty();
 		}).orElseGet(() -> {
@@ -80,11 +80,6 @@ public class UsuarioServicos {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email não existe!"); // Email não existe
 		});
 
-	}
-
-	public Optional<Usuario> cadastrarUsuario(@Valid Usuario novoUsuario) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -4,6 +4,7 @@ package org.generation.blogPessoal.security;
 import java.util.Collection;
 import java.util.List;
 
+import org.generation.blogPessoal.model.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,7 +18,7 @@ public class UserDetailsImplements implements UserDetails {
 	private String senha;
 	private List<GrantedAuthority> autorizacoes;
 
-	public UserDetailsImplements(org.generation.blogPessoal.model.Usuario usuario) {
+	public UserDetailsImplements(Usuario usuario) {
 		this.email = usuario.getEmail();
 		this.senha = usuario.getSenha();
 	}
