@@ -1,6 +1,5 @@
 package org.generation.blogPessoal.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,42 +8,47 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@Table(name = "tb_tema")
 public class Tema {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long idTema;
-	private @NotBlank String tema;
+	@NotNull
+	private String descricao;
 
-	@OneToMany(mappedBy = "temaRelacionado", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({"temaRelacionado"})
-	private List<Postagem> postagens = new ArrayList<>();
+	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("tema")
+	private List<Postagem> postagem;
 
-	public Long getIdTema() {
-		return idTema;
+	public long getId() {
+		return id;
 	}
 
-	public void setIdTema(Long idTema) {
-		this.idTema = idTema;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String getTema() {
-		return tema;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setTema(String tema) {
-		this.tema = tema;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public List<Postagem> getPostagens() {
-		return postagens;
+	public List<Postagem> getPostagem() {
+		return postagem;
 	}
 
-	public void setPostagens(List<Postagem> postagens) {
-		this.postagens = postagens;
+	public void setPostagem(List<Postagem> postagem) {
+		this.postagem = postagem;
 	}
 
 }

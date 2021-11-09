@@ -2,9 +2,11 @@ package org.generation.blogPessoal.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -34,7 +36,7 @@ public class SwaggerConfig {
 	}
 
 	private static Contact contact() {
-		return new Contact("Victor Carreras", "https://github.com/carrerasvictor", "titotortuga3@gmail.com");
+		return new Contact("Victor Henrique Carreras Jorge", "https://github.com/carrerasvictor", "titotortuga3@gmail.com");
 	}
 
 	private static List<Response> responseMessage() {

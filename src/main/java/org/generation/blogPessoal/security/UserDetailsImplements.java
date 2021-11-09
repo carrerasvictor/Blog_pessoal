@@ -10,35 +10,36 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserDetailsImplements implements UserDetails {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private String email;
-	private String senha;
-	private List<GrantedAuthority> autorizacoes;
 
-	public UserDetailsImplements(Usuario usuario) {
-		this.email = usuario.getEmail();
-		this.senha = usuario.getSenha();
+	private String userName;
+	private String password;
+	private List<GrantedAuthority> authorities;
+
+	public UserDetailsImplements(Usuario user) {
+		this.userName = user.getUsuario();
+		this.password = user.getSenha();
+	}
+
+	public UserDetailsImplements() {
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return autorizacoes;
+		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
-		return senha;
+		return password;
 	}
 
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return email;
+		return userName;
 	}
 
 	@Override
