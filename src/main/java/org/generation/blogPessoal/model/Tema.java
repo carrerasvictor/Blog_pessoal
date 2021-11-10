@@ -9,23 +9,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "tb_tema")
 public class Tema {
-	@Id
+
+	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
+	
 	@NotNull
 	private String descricao;
-
-	@OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
+	
+	private long qtd;
+	
+	@OneToMany(mappedBy = "tema", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("tema")
 	private List<Postagem> postagem;
+	
+	
+
+	public long getQtd() {
+		return qtd;
+	}
+
+	public void setQtd(long qtd) {
+		this.qtd = qtd;
+	}
 
 	public long getId() {
 		return id;
@@ -50,5 +63,5 @@ public class Tema {
 	public void setPostagem(List<Postagem> postagem) {
 		this.postagem = postagem;
 	}
-
+	
 }

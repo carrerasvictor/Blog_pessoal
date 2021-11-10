@@ -1,11 +1,9 @@
 package org.generation.blogPessoal.controller;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,56 +19,43 @@ import org.generation.blogPessoal.model.Tema;
 import org.generation.blogPessoal.repository.TemaRepository;
 
 @RestController
-@RequestMapping("/api/v1/tema")
-@CrossOrigin(allowedHeaders = "*", origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/tema")
 public class TemaController {
-
-	private @Autowired TemaRepository repositorio;
-
-	@GetMapping("/todos")
-	public ResponseEntity<List<Tema>> pegarTodos() {
-		List<Tema> objetoLista = repositorio.findAll();
-
-		if (objetoLista.isEmpty()) {
-			return ResponseEntity.status(204).build();
-		} else {
-			return ResponseEntity.status(200).body(objetoLista);
-		}
+	
+	@Autowired
+	private TemaRepository repository;
+	
+	@GetMapping
+	public ResponseEntity<List<Tema>> getAll(){
+		return ResponseEntity.ok(repository.findAll());
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Tema> getById(@PathVariable long id){
+		return repository.findById(id).map(resp -> ResponseEntity.ok(resp))
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
+	@GetMapping("/nome/{nome}")
+	public ResponseEntity<List<Tema>> getByName(@PathVariable String nome){
+		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(nome));
+	}
+	
+	@PostMapping
+	public ResponseEntity<Tema> post (@RequestBody Tema tema){
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(repository.save(tema));
 	}
 
-	@GetMapping("/{id_tema}")
-	public ResponseEntity<Tema> pegarPorId(@PathVariable(value = "id_tema") Long idTema) {
-		Optional<Tema> objetoOptional = repositorio.findById(idTema);
-
-		if (objetoOptional.isPresent()) {
-			return ResponseEntity.status(200).body(objetoOptional.get());
-		} else {
-			return ResponseEntity.status(204).build();
-		}
+	@PutMapping
+	public ResponseEntity<Tema> put (@RequestBody Tema tema){
+		return ResponseEntity.ok(repository.save(tema));				
 	}
-
-	@PostMapping("/salvar")
-	public ResponseEntity<Tema> salvar(@Valid @RequestBody Tema novoTema) {
-		return ResponseEntity.status(201).body(repositorio.save(novoTema));
-
+	
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable long id) {
+		repository.deleteById(id);
 	}
-
-	@PutMapping("/atualizar")
-	public ResponseEntity<Tema> atualizar(@Valid @RequestBody Tema novoTema) {
-		return ResponseEntity.status(201).body(repositorio.save(novoTema));
-
-	}
-
-	@DeleteMapping("/deletar/{id_tema}")
-	public ResponseEntity<Tema> deletar(@PathVariable(value = "id_tema") Long idTema) {
-		Optional<Tema> objetoOptional = repositorio.findById(idTema);
-
-		if (objetoOptional.isPresent()) {
-			repositorio.deleteById(idTema);
-			return ResponseEntity.status(204).build();
-		} else {
-			return ResponseEntity.status(400).build();
-		}
-	}
-
+	
 }
